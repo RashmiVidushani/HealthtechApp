@@ -1,8 +1,6 @@
 import 'dart:convert';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:application/model/stat.dart';
-import 'dart:convert';
 
 class StatApi {
   static Future<List<Covidstat>> getStat() async {

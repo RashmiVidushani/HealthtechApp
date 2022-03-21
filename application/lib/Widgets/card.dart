@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 
 class Deco extends StatelessWidget {
-  const Deco({Key? key, required this.country, required this.time})
+  const Deco(
+      {Key? key,
+      required this.country,
+      required this.time,
+      required this.activecases,
+      required this.population})
       : super(key: key);
 
-  //final String activecases;
+  final String activecases;
   final String country;
-  // final int population;
+  final String population;
   final String time;
 
   @override
@@ -16,11 +21,11 @@ class Deco extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       height: 180,
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 204, 198, 198),
+        color: const Color.fromARGB(255, 204, 198, 198),
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Color.fromARGB(255, 253, 240, 240).withOpacity(0.6),
+            color: const Color.fromARGB(255, 253, 240, 240).withOpacity(0.6),
             offset: const Offset(
               0.0,
               10.0,
@@ -60,7 +65,7 @@ class Deco extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                /*Container(
+                Container(
                   padding: const EdgeInsets.all(5),
                   margin: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
@@ -75,10 +80,48 @@ class Deco extends StatelessWidget {
                         size: 18,
                       ),
                       const SizedBox(width: 7),
-                      Text(rating),
+                      Text(country),
                     ],
                   ),
-                ),*/
+                ),
+                Container(
+                  padding: const EdgeInsets.all(5),
+                  margin: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.4),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.schedule,
+                        color: Colors.yellow,
+                        size: 18,
+                      ),
+                      const SizedBox(width: 7),
+                      Text(activecases),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(5),
+                  margin: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.4),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.schedule,
+                        color: Colors.yellow,
+                        size: 18,
+                      ),
+                      const SizedBox(width: 7),
+                      Text(population),
+                    ],
+                  ),
+                ),
                 Container(
                   padding: const EdgeInsets.all(5),
                   margin: const EdgeInsets.all(10),

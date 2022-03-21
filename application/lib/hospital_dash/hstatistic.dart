@@ -47,11 +47,10 @@ class _HstatisticState extends State<Hstatistic> {
                 itemCount: _stat.length,
                 itemBuilder: (context, index) {
                   return Deco(
-                    country: _stat[index].country,
-                    time: _stat[index].time,
-                    // rating: _stat[index].rating.toString(),
-                    // thumbnailUrl: _stat[index].images);
-                  );
+                      country: _stat[index].country,
+                      time: _stat[index].time,
+                      population: _stat[index].population,
+                      activecases: _stat[index].activecases);
                 },
               ));
   }
