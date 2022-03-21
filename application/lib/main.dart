@@ -1,5 +1,6 @@
 import 'package:application/commonscreens/registration.dart';
 import 'package:application/hospital_dash/hdoctor.dart';
+import 'package:application/hospital_dash/hstatistic.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.lightGreen,
       ),
       debugShowCheckedModeBanner: false,
-      home: const Hdoctor(),
+      home: const Hstatistic(),
     );
   }
 }
