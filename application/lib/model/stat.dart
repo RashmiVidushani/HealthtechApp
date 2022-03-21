@@ -1,20 +1,20 @@
 class Covidstat {
   final String activecases;
   final String country;
-  final String population;
+  final String continent;
   final String time;
 
   Covidstat(
       {required this.activecases,
       required this.country,
-      required this.population,
+      required this.continent,
       required this.time});
 
   factory Covidstat.fromJson(dynamic json) {
     return Covidstat(
         activecases: json['active'] ?? "",
         country: json['country'] as String,
-        population: json['population'] ?? "",
+        continent: json['continent'] ?? "",
         time: json['time']);
   }
   static List<Covidstat> covidstatFromSnapshot(List snapshot) {
@@ -25,6 +25,6 @@ class Covidstat {
 
   @override
   String toString() {
-    return 'Stat{ country:$country, population: $population, active:$activecases, time: $time}';
+    return 'Stat{ country:$country,  active:$activecases, continent:$continent, time: $time}';
   }
 }
