@@ -1,7 +1,10 @@
 import 'package:application/individual_dash/individual.dart';
+import 'package:application/individual_dash/irecord.dart';
+import 'package:application/model/i_user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Ipersonal extends StatefulWidget {
   const Ipersonal({Key? key}) : super(key: key);
@@ -12,6 +15,21 @@ class Ipersonal extends StatefulWidget {
 
 class _IpersonalState extends State<Ipersonal> {
   final _auth = FirebaseAuth.instance;
+  late String username, phone, email;
+  getUsername(username) {
+    this.username = username;
+  }
+
+  getEmail(email) {
+    this.email = email;
+  }
+
+  getPhone(phone) {
+    this.phone = phone;
+  }
+
+  User? user = FirebaseAuth.instance.currentUser;
+  UserModel loggedInUser = UserModel();
 
   // string for displaying the error Message
   String? errorMessage;
@@ -20,52 +38,22 @@ class _IpersonalState extends State<Ipersonal> {
   final usernameEditingController = TextEditingController();
   final phoneEditingController = TextEditingController();
   final emailEditingController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(user!.uid)
+        .get()
+        .then((value) {
+      loggedInUser = UserModel.fromMap(value.data());
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    //search feild
-    /*final searchField = TextFormField(
-        autofocus: false,
-        controller: searchEditingController,
-        validator: (value) {
-          RegExp regex = RegExp(r'^.{3,}$');
-          if (value!.isEmpty) {
-            return ("Empty search bar");
-          }
-          if (!regex.hasMatch(value)) {
-            return ("Enter Valid username(Min. 3 Character)");
-          }
-          return null;
-        },
-        onSaved: (value) {
-          searchEditingController.text = value!;
-        },
-        textInputAction: TextInputAction.next,
-        decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.search),
-          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: "Search by username",
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ));
-
-    //search button
-    final search = Material(
-      elevation: 5,
-      borderRadius: BorderRadius.circular(50),
-      color: const Color.fromARGB(255, 39, 187, 59),
-      child: MaterialButton(
-          padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          minWidth: MediaQuery.of(context).size.width,
-          onPressed: () {},
-          child: const Text(
-            "Search",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
-          )),
-    );*/
-
     //updte button
     final update = Material(
       elevation: 5,
@@ -74,7 +62,9 @@ class _IpersonalState extends State<Ipersonal> {
       child: MaterialButton(
           padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           minWidth: MediaQuery.of(context).size.width,
-          onPressed: () {},
+          onPressed: () {
+            updateDetailsToFirestore(emailEditingController.text);
+          },
           child: const Text(
             "Update",
             textAlign: TextAlign.center,
@@ -91,7 +81,10 @@ class _IpersonalState extends State<Ipersonal> {
       child: MaterialButton(
           padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           minWidth: MediaQuery.of(context).size.width,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const Irecord()));
+          },
           child: const Text(
             "Records",
             textAlign: TextAlign.center,
@@ -115,6 +108,7 @@ class _IpersonalState extends State<Ipersonal> {
           }
           return null;
         },
+        onChanged: (value) => setState(() => username = value),
         onSaved: (value) {
           usernameEditingController.text = value!;
         },
@@ -142,6 +136,7 @@ class _IpersonalState extends State<Ipersonal> {
         onSaved: (value) {
           phoneEditingController.text = value!;
         },
+        onChanged: (value) => setState(() => phone = value),
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: const Icon(Icons.phone),
@@ -171,6 +166,7 @@ class _IpersonalState extends State<Ipersonal> {
         onSaved: (value) {
           emailEditingController.text = value!;
         },
+        onChanged: (value) => setState(() => email = value),
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: const Icon(Icons.mail),
@@ -209,11 +205,33 @@ class _IpersonalState extends State<Ipersonal> {
                           color: Color.fromARGB(255, 0, 0, 0),
                           fontWeight: FontWeight.w500),
                     ),
-                    const SizedBox(height: 25),
-                    // searchField,
-                    // const SizedBox(height: 20),
-                    // search,
-                    // const SizedBox(height: 20),
+                    const SizedBox(height: 15),
+                    Text("Welcome to your profile ${loggedInUser.username}. ",
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        )),
+                    Text("      Username: ${loggedInUser.username}. ",
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        )),
+                    Text("Phone: ${loggedInUser.phone}. ",
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        )),
+                    Text("Email: ${loggedInUser.email}. ",
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        )),
+
+                    const SizedBox(height: 20),
                     usernameField,
                     const SizedBox(height: 20),
                     phoneField,
@@ -246,14 +264,23 @@ class _IpersonalState extends State<Ipersonal> {
       ),
     );
   }
-}
-/*
-class Search {
-  searchByUsername(String search) {
-    return FirebaseFirestore.instance
+
+  updateDetailsToFirestore(String text) async {
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    User? user = _auth.currentUser;
+
+    UserModel userModel = UserModel();
+
+    // writing all the values
+    userModel.email = user!.email;
+    userModel.username = usernameEditingController.text;
+    userModel.phone = phoneEditingController.text;
+
+    await firebaseFirestore
         .collection('users')
-        .where('username', isEqualTo: search.substring(0, 1).toUpperCase())
-        .get();
+        .doc(user.uid)
+        .update(userModel.toMap());
+    print("updated user");
+    Fluttertoast.showToast(msg: "Account Updated successfully :) ");
   }
 }
-*/

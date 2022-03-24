@@ -1,4 +1,5 @@
 import 'package:application/commonscreens/registration.dart';
+import 'package:application/commonscreens/splashscreen.dart';
 import 'package:application/hospital_dash/hdoctor.dart';
 import 'package:application/hospital_dash/hospital.dart';
 import 'package:application/hospital_dash/hstatistic.dart';
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       title: 'Health Tech',
       debugShowCheckedModeBanner: false,
-      home: Hospital(),
+      home: SplashScreen(),
     );
   }
 }
